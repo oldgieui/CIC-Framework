@@ -1,2 +1,1 @@
-HakgoCanvas
-===========
+CIC Framework
