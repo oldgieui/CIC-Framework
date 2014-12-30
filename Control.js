@@ -11,7 +11,7 @@ window.HGCVS.Control = (function () {
     var Usages = {
         Mouse: false,
         KeyBoard: false,
-        DirectTouch: false,
+        Flicking: false,
         TouchPad: false
     };
 
@@ -88,6 +88,7 @@ window.HGCVS.Control = (function () {
                     keyState[keyMap[keyCode]] = false;
                 }
             }
+//            console.log(keyState);
         }
 
         function init() {
@@ -122,8 +123,8 @@ window.HGCVS.Control = (function () {
         };
     })();
 
-    var C$DirectTouch = (function () {
-        var TouchMap = {
+    var C$Flicking = (function () {
+        var FlickMap = {
             "Up": false,
             "Down": false,
             "Left": false,
@@ -152,31 +153,31 @@ window.HGCVS.Control = (function () {
             curY = newY;
 
             if (dirX > 1) {
-                TouchMap.Right = true;
-                TouchMap.Left = false;
+                FlickMap.Right = true;
+                FlickMap.Left = false;
             } else if (dirX < -1) {
-                TouchMap.Right = false;
-                TouchMap.Left = true;
+                FlickMap.Right = false;
+                FlickMap.Left = true;
             } else {
-                TouchMap.Right = false;
-                TouchMap.Left = false;
+                FlickMap.Right = false;
+                FlickMap.Left = false;
             }
             if (dirY < -1) {
-                TouchMap.Up = true;
-                TouchMap.Down = false;
+                FlickMap.Up = true;
+                FlickMap.Down = false;
             } else if (dirY > 1) {
-                TouchMap.Up = false;
-                TouchMap.Down = true;
+                FlickMap.Up = false;
+                FlickMap.Down = true;
             } else {
-                TouchMap.Up = false;
-                TouchMap.Down = false;
+                FlickMap.Up = false;
+                FlickMap.Down = false;
             }
 
             if (e.touches.length >= 2) {
-                TouchMap.MultiTouch = true;
+                FlickMap.MultiTouch = true;
             }
 
-//            document.body.innerHTML = "Up : " + TouchMap.Up + " Down : " + TouchMap.Down + " Left : " + TouchMap.Left + " Right : " + TouchMap.Right + " MultiTouch : " + TouchMap.MultiTouch;
+            document.body.innerHTML = "Up : " + FlickMap.Up + " Down : " + FlickMap.Down + " Left : " + FlickMap.Left + " Right : " + FlickMap.Right + " MultiTouch : " + FlickMap.MultiTouch;
 
         }
 
@@ -185,24 +186,24 @@ window.HGCVS.Control = (function () {
             e.preventDefault();
 
             if (e.touches.length === 0) {
-                TouchMap.Uo = false;
-                TouchMap.Down = false;
-                TouchMap.Left = false;
-                TouchMap.Right = false;
-                TouchMap.MultiTouch = false;
+                FlickMap.Uo = false;
+                FlickMap.Down = false;
+                FlickMap.Left = false;
+                FlickMap.Right = false;
+                FlickMap.MultiTouch = false;
             }
             else if (e.touches.length === 1) {
-                TouchMap.MultiTouch = false;
+                FlickMap.MultiTouch = false;
             }
 
         }
 
         function init() {
-            Usages.DirectTouch = true;
+            Usages.Flicking = true;
 
             this.isMovingTo = function (direction) {
-                if (TouchMap[direction] !== undefined) {
-                    return TouchMap[direction];
+                if (FlickMap[direction] !== undefined) {
+                    return FlickMap[direction];
                 }
                 else {
                     return false;
@@ -210,7 +211,7 @@ window.HGCVS.Control = (function () {
             }
 
             this.isMultiTouched = function () {
-                return TouchMap.MultiTouch;
+                return FlickMap.MultiTouch;
             }
 
 
@@ -220,7 +221,7 @@ window.HGCVS.Control = (function () {
         }
 
         function close() {
-            Usages.DirectTouch = false;
+            Usages.Flicking = false;
 
             delete this.isMovingTo;
             delete this.isMultiTouched;
@@ -241,7 +242,7 @@ window.HGCVS.Control = (function () {
     return {
         Usages: Usages,
         KeyBoard: C$KeyBoard,
-        DirectTouch: C$DirectTouch
+        Flicking: C$Flicking
     };
 })();
 
